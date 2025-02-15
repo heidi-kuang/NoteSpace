@@ -140,6 +140,9 @@ def upload_file():
         input_path = os.path.join(UPLOAD_FOLDER, file.filename)
         output_path = os.path.join(OUTPUT_FOLDER, f"processed_{desc}_{file.filename}")
 
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+        os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+
         log_tmp_contents("Before saving the input file", UPLOAD_FOLDER) # print /tmp contents before saving file
         file.save(input_path)
         log_tmp_contents("After saving the input file", UPLOAD_FOLDER) # print /tmp contents after saving file
