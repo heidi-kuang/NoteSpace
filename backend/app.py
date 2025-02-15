@@ -31,7 +31,7 @@ def home():
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def add_margins(input_pdf_path, output_pdf_path, margin_ratio=0.5, clip_rhs=0.0, anchor="left"):
+def add_margins(input_pdf_path, output_pdf_path, margin_ratio=0.5, clip_rhs=0.0, clip_lhs=0.0, anchor="left"):
     """
     Adds a right-hand margin to each page of the PDF.
     
@@ -49,6 +49,13 @@ def add_margins(input_pdf_path, output_pdf_path, margin_ratio=0.5, clip_rhs=0.0,
         # clip right hand side of pdf by clip_rhs% of the page width
         if (clip_rhs > 0.0):
             rect = fitz.Rect(rect.tl, (rect.tr[0] * (1 - clip_rhs), rect.br[1])) # new width is clipped, same height
+        
+        # clip left hand side of pdf by clip_lhs% of the page width
+        if (clip_lhs > 0.0):
+           print("clip_lhs: ", clip_lhs)
+           print("rect before clipping: ", rect)
+           rect = fitz.Rect((rect.tl[0] + rect.width * clip_lhs, rect.tl[1]), rect.br) # new width is clipped, same height
+           print("rect after clipping: ", rect)
         
         page.set_cropbox(rect)  # Set the cropbox to the new dimensions
 
@@ -131,6 +138,9 @@ def upload_file():
     # Get optional clip_rhs from form body (default: 0.0)
     clip_rhs = float(request.form.get("clip_rhs", 0.0))
 
+    # Get optional clip_rhs from form body (default: 0.0)
+    clip_lhs = float(request.form.get("clip_lhs", 0.0))
+
     # Get optional anchor from form body (default: "left")
     anchor = request.form.get("anchor", "left")
 
@@ -147,7 +157,7 @@ def upload_file():
         file.save(input_path)
         log_tmp_contents("After saving the input file", UPLOAD_FOLDER) # print /tmp contents after saving file
 
-        add_margins(input_path, output_path, margin_ratio, clip_rhs, anchor)
+        add_margins(input_path, output_path, margin_ratio=margin_ratio, clip_rhs=clip_rhs, clip_lhs=clip_lhs, anchor=anchor)
         log_tmp_contents("After processing the file", OUTPUT_FOLDER) # print /tmp contents before after processing file
 
         return send_file(output_path, as_attachment=True)
