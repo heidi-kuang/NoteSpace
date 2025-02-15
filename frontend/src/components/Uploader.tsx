@@ -4,14 +4,19 @@ const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000"
 
 const Uploader: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>(""); // url of uploaded file, for previewing
   const [marginRatio, setMarginRatio] = useState<number>(0.5);
   const [clipRHS, setClipRHS] = useState<number>(0.0); // 0.02 for networks
   const [anchor, setAnchor] = useState<string>("left"); 
   const [downloadLink, setDownloadLink] = useState<string>("");
 
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       setFile(event.target.files[0]);
+
+      const objectUrl = URL.createObjectURL(event.target.files[0]);
+      setPreviewUrl(objectUrl);
     }
   };
 
@@ -88,8 +93,29 @@ const Uploader: React.FC = () => {
 
       <button onClick={handleUpload}>Upload and Process</button>
 
+      {previewUrl && (
+        <div>
+          <iframe
+            src={previewUrl}
+            width="100%"
+            height="500px"
+            title="pdf upload preview"
+            style={{border:"1 px solid #ccc"}}
+          >
+          </iframe>
+        </div>
+      )}
+
       {downloadLink && (
         <div>
+          <iframe
+            src={downloadLink}
+            width="100%"
+            height="500px"
+            title="pdf processed preview"
+            style={{border:"1 px solid #ccc"}}
+          >
+          </iframe>
           <h3>Download Processed PDF:</h3>
           <a href={downloadLink} download="processed.pdf">
             Click here to download
