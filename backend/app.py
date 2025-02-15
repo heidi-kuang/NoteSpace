@@ -125,16 +125,16 @@ def upload_file():
     if file.filename == "":
         return {"error": "No selected file"}, 400
     
-    # Get optional margin_ratio from query parameters (default: 0.5)
-    margin_ratio = float(request.args.get("margin_ratio", 0.5))
+    # Get optional margin_ratio from form body (default: 0.5)
+    margin_ratio = float(request.form.get("margin_ratio", 0.5))
     
-    # Get optional clip_rhs from query parameters (default: 0.0)
-    clip_rhs = float(request.args.get("clip_rhs", 0.0))
+    # Get optional clip_rhs from form body (default: 0.0)
+    clip_rhs = float(request.form.get("clip_rhs", 0.0))
 
-    # Get optional anchor from query parameters (default: "left")
-    anchor = request.args.get("anchor", 0.0)
+    # Get optional anchor from form body (default: "left")
+    anchor = request.form.get("anchor", "left")
 
-    desc = request.args.get("desc", 1)
+    desc = request.form.get("desc", 1)
 
     if file and allowed_file(file.filename):
         input_path = os.path.join(UPLOAD_FOLDER, file.filename)
