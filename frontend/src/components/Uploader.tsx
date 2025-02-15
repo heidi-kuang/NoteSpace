@@ -1,26 +1,21 @@
 import { useState } from 'react'
+import SettingsForm from '@/components/SettingsForm'
+import PDFPreview from '@/components/PDFPreview'
+import FileUploader from './FileUploader'
+import { FormValues } from '@/types/form'
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000"
 
-const Uploader: React.FC = () => {
+const Uploader = () => {
   const [file, setFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>(""); // url of uploaded file, for previewing
-  const [marginRatio, setMarginRatio] = useState<number>(0.5);
-  const [clipRHS, setClipRHS] = useState<number>(0.0); // 0.02 for networks
-  const [anchor, setAnchor] = useState<string>("left"); 
   const [downloadLink, setDownloadLink] = useState<string>("");
 
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setFile(event.target.files[0]);
-
-      const objectUrl = URL.createObjectURL(event.target.files[0]);
-      setPreviewUrl(objectUrl);
-    }
-  };
-
-  const handleUpload = async () => {
+  /**
+   * Handle form submission: upload file and process PDF
+   * @param data file, margin ratio, clip RHS, anchor
+   * @post downloadLink is set to the processed PDF
+   */
+  const handleFormSubmit = async (data: FormValues) => {
     if (!file) {
       alert("Please select a file first.");
       return;
@@ -28,9 +23,9 @@ const Uploader: React.FC = () => {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("margin_ratio", marginRatio.toString());
-    formData.append("clip_rhs", clipRHS.toString());
-    formData.append("anchor", anchor);
+    formData.append("margin_ratio", data.marginRatio.toString());
+    formData.append("clip_rhs", data.clipRHS.toString());
+    formData.append("anchor", data.anchor);
     formData.append("desc", "test-frontend");
 
     try {
@@ -41,6 +36,8 @@ const Uploader: React.FC = () => {
 
       if (!response.ok) {
         throw new Error("Failed to process PDF");
+      } else {
+        console.log("PDF successfully processed");
       }
 
       // Convert response to blob and create a download link
@@ -50,78 +47,21 @@ const Uploader: React.FC = () => {
     } catch (error) {
       console.error("Error uploading file:", error);
     }
-  };
+  }
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
       <h1>NoteSpace</h1>
-      <input type="file" onChange={handleFileChange} />
-      <br />
-      <label>
-        Margin Ratio:
-        <input
-          type="number"
-          value={marginRatio}
-          onChange={(e) => setMarginRatio(parseFloat(e.target.value))}
-          step={0.1}
-          min={0.1}
-          max={1.0}
-        />
-      </label>
-      <label>
-        RHS Clip:
-        <input
-          type="number"
-          value={clipRHS}
-          onChange={(e) => setClipRHS(parseFloat(e.target.value))}
-          step={0.01}
-          min={0.0}
-          max={1.0}
-        />
-      </label>
 
-      {/* Anchor Selection Dropdown */}
-      <label>
-        Anchor:
-        <select value={anchor} onChange={(e) => setAnchor(e.target.value)}>
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-        </select>
-      </label>
-      <br />
+      <FileUploader
+        onFileSelect={(selectedFile) => {
+          setFile(selectedFile);
+        }}
+      />
 
-      <button onClick={handleUpload}>Upload and Process</button>
+      <SettingsForm onSubmit={handleFormSubmit}/>
 
-      {previewUrl && (
-        <div>
-          <iframe
-            src={previewUrl}
-            width="100%"
-            height="500px"
-            title="pdf upload preview"
-            style={{border:"1 px solid #ccc"}}
-          >
-          </iframe>
-        </div>
-      )}
-
-      {downloadLink && (
-        <div>
-          <iframe
-            src={downloadLink}
-            width="100%"
-            height="500px"
-            title="pdf processed preview"
-            style={{border:"1 px solid #ccc"}}
-          >
-          </iframe>
-          <h3>Download Processed PDF:</h3>
-          <a href={downloadLink} download="processed.pdf">
-            Click here to download
-          </a>
-        </div>
-      )}
+      <PDFPreview previewUrl={downloadLink} />
     </div>
   )
 }

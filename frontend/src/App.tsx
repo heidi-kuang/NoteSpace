@@ -1,5 +1,7 @@
-import Uploader from './components/Uploader'
+import SettingsForm from '@/components/SettingsForm'
 import './App.css'
+import Uploader from './components/Uploader'
+
 
 function App() {
 
