@@ -25,6 +25,7 @@ const Uploader = () => {
     formData.append("file", file);
     formData.append("margin_ratio", data.marginRatio.toString());
     formData.append("clip_rhs", data.clipRHS.toString());
+    formData.append("clip_lhs", data.clipLHS.toString());
     formData.append("anchor", data.anchor);
     formData.append("desc", "test-frontend");
 

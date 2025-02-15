@@ -15,6 +15,10 @@ const formSchema = z.object({
     .number()
     .min(0.0)
     .max(1.0),
+  clipLHS: z
+    .number()
+    .min(0.0)
+    .max(1.0),
   anchor: z.enum(["left", "center", "right"]),
 });
 
@@ -29,6 +33,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit }) => {
     defaultValues: {
       marginRatio: 0.5,
       clipRHS: 0.0,
+      clipLHS: 0.0,
       anchor: "left",
     },
   });
@@ -85,6 +90,28 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit }) => {
                   max="1.0"
                   value={field.value}
                   onChange={(e) => form.setValue("clipRHS", parseFloat(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Clip LHS Input */}
+        <FormField
+          control={form.control}
+          name="clipLHS"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Clip LHS</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0.0"
+                  max="1.0"
+                  value={field.value}
+                  onChange={(e) => form.setValue("clipLHS", parseFloat(e.target.value))}
                 />
               </FormControl>
               <FormMessage />
