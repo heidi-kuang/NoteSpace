@@ -51,16 +51,24 @@ const Uploader = () => {
   }
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
+    <div style={{ padding: "20px", margin: "auto"}}>
       <h1>NoteSpace</h1>
-
-      <FileUploader
-        onFileSelect={(selectedFile) => {
-          setFile(selectedFile);
-        }}
-      />
-
-      <SettingsForm onSubmit={handleFormSubmit}/>
+      <div className="flex flex-col md:flex-row w-full"> 
+        {/* File uploader on the left. Take up more space. */}
+        <div className="flex-2 mr-8 flex-grow">
+          <FileUploader
+            onFileSelect={(selectedFile) => {
+              setFile(selectedFile);
+            }}
+          />
+        </div>
+        
+        {/* Settings on the right. */}
+        <div className="h-[380px] bg-white shadow-lg p-5 rounded-lg flex-grow flex-1">
+          <SettingsForm onSubmit={handleFormSubmit}/>
+        </div>
+      </div>
+      
 
       <PDFPreview previewUrl={downloadLink} />
     </div>
