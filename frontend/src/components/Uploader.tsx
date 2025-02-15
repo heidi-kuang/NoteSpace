@@ -3,14 +3,12 @@ import SettingsForm from '@/components/SettingsForm'
 import PDFPreview from '@/components/PDFPreview'
 import FileUploader from './FileUploader'
 import { FormValues } from '@/types/form'
-import DownloadButton from './DownloadButton'
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000"
 
 const Uploader = () => {
   const [file, setFile] = useState<File | null>(null);
   const [downloadLink, setDownloadLink] = useState<string>("");
-  const [fileName, setFileName] = useState<string>(""); // filename after download
 
   /**
    * Handle form submission: upload file and process PDF
