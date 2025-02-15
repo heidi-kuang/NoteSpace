@@ -49,7 +49,7 @@ const Uploader: React.FC = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>PDF Margin Adder</h1>
+      <h1>NoteSpace</h1>
       <input type="file" onChange={handleFileChange} />
       <br />
       <label>
