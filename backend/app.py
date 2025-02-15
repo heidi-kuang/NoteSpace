@@ -1,8 +1,13 @@
 import os
 import fitz  # PyMuPDF
 from flask import Flask, request, send_file
+from flask_cors import CORS
+from utils import log_tmp_contents
+
+# note: run pip list --format=freeze > requirements.txt to update dependencies
 
 app = Flask(__name__)
+CORS(app)
 
 # Detect if running locally or in production. 
 # If testing locally, before `flask run`, run `export FLASK_ENV=development`
@@ -104,7 +109,13 @@ def add_margins(input_pdf_path, output_pdf_path, margin_ratio=0.5, clip_rhs=0.0,
 #     new_doc.save(output_pdf_path)
 #     new_doc.close()
 
-
+"""
+params:
+- margin_ratio: float (default: 0.5). Add this percentage of the original width as margin
+- clip_rhs: float (default: 0.0). Clip right-hand side of the page by this percentage
+- anchor: string (default: "left"). Where to anchor the original content. Options: "left", "center", "right"
+- desc: string (default: "1"). For naming the output file, used for debugging purposes.
+"""
 @app.route("/upload", methods=["POST"])
 def upload_file():
     if "file" not in request.files: # "file" is form-data key
@@ -129,8 +140,12 @@ def upload_file():
         input_path = os.path.join(UPLOAD_FOLDER, file.filename)
         output_path = os.path.join(OUTPUT_FOLDER, f"processed_{desc}_{file.filename}")
 
+        log_tmp_contents("Before saving the input file", UPLOAD_FOLDER) # print /tmp contents before saving file
         file.save(input_path)
+        log_tmp_contents("After saving the input file", UPLOAD_FOLDER) # print /tmp contents after saving file
+
         add_margins(input_path, output_path, margin_ratio, clip_rhs, anchor)
+        log_tmp_contents("After processing the file", OUTPUT_FOLDER) # print /tmp contents before after processing file
 
         return send_file(output_path, as_attachment=True)
 
