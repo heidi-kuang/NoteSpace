@@ -6,9 +6,8 @@ const PDFPreview: React.FC<PDFPreviewProps> = ({ previewUrl }) => {
   if (!previewUrl) return null;
 
   return (
-    <div style={{ marginTop: "64px", height: "500px"}}>
-      <h3 className="text-l mb-4">Here's your processed PDF 🎉</h3>
-      <div className="mt-4 border rounded-lg overflow-hidden shadow-md">
+    <div style={{ marginTop: "16px", height: "500px"}}>
+      <div className="border rounded-lg overflow-hidden shadow-md">
         <embed 
           src={previewUrl} 
           width="100%" 
