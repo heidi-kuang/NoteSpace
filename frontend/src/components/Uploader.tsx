@@ -4,6 +4,7 @@ import PDFPreview from '@/components/PDFPreview'
 import FileUploader from './FileUploader'
 import { FormValues } from '@/types/form'
 import DownloadButton from '@/components/DownloadButton'
+import { useToast } from "@/hooks/use-toast";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000"
 
@@ -11,7 +12,9 @@ const Uploader = () => {
   const [file, setFile] = useState<File | null>(null);
   const [downloadLink, setDownloadLink] = useState<string>("");
   const [processedFileName, setProcessedFileName] = useState<string>("");
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toast } = useToast();
+  
   /**
    * Handle form submission: upload file and process PDF
    * @param data file, margin ratio, clip RHS, anchor
@@ -19,9 +22,14 @@ const Uploader = () => {
    */
   const handleFormSubmit = async (data: FormValues) => {
     if (!file) {
-      alert("Please select a file first.");
+      toast({description: "Please select a file first.", variant: "error", duration: 3000});
       return;
     }
+
+    toast({title: "Processing...", 
+      description: "If this takes a while, it's because the free server I'm using to host my backend falls asleep after 15 minutes of inactivity and has to reboot. Give it like 30 seconds lol. Your next uploads should be processed much faster!",
+      duration: Infinity,
+    });
 
     const formData = new FormData();
     formData.append("file", file);
@@ -32,6 +40,7 @@ const Uploader = () => {
     formData.append("desc", "test-frontend");
 
     try {
+      // await new Promise((resolve) => setTimeout(resolve, 2000)); // DEBUG
       const response = await fetch(`${API_URL}/upload`, {
         method: "POST",
         body: formData,
@@ -41,6 +50,11 @@ const Uploader = () => {
         throw new Error("Failed to process PDF");
       } else {
         console.log("PDF successfully processed");
+        toast({
+          title: "Success!",
+          description: "Your PDF is ready.",
+          duration: 5000,
+        })
       }
 
       // Convert response to blob and create a download link
@@ -50,6 +64,7 @@ const Uploader = () => {
       setDownloadLink(url);
       console.log("set download link:", url);
 
+      // get file name from response header
       const contentDisposition = response.headers.get("Content-Disposition");
       console.log("contentDisposition:", contentDisposition);
       let newProcessedFileName = "hellooo";
@@ -80,7 +95,7 @@ const Uploader = () => {
         
         {/* Settings on the right. */}
         <div className="h-[380px] bg-white shadow-lg p-5 rounded-lg flex-grow flex-1">
-          <SettingsForm onSubmit={handleFormSubmit}/>
+          <SettingsForm onSubmit={handleFormSubmit} isLoading={isLoading} setIsLoading={setIsLoading}/>
         </div>
       </div>
 

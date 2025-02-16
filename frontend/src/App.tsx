@@ -1,12 +1,14 @@
 import './App.css';
 import Uploader from './components/Uploader';
 import logo from './assets/notespace-logo.svg';
+import { Toaster } from './components/ui/toaster';
 
 
 function App() {
 
   return (
     <>
+      <Toaster />
       <div className="flex flex-col items-center p-6">
         <img
           src={logo}

@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FormValues } from "@/types/form";
+import { Loader2 } from "lucide-react";
+import confetti from "canvas-confetti";
 
 const formSchema = z.object({
   marginRatio: z
@@ -24,9 +26,12 @@ const formSchema = z.object({
 
 interface SettingsFormProps {
   onSubmit: (data: FormValues) => void;
+  isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
 }
 
-const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit }) => {
+const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsLoading }) => {
+  
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -38,6 +43,24 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit }) => {
     },
   });
 
+  const handleSubmit = async (data: FormValues) => { 
+    console.log("Button clicked");
+    console.log("SettingsForm data:", data);
+    setIsLoading(true);
+    try {
+      await onSubmit(data);
+      confetti({
+        particleCount: 90,
+        spread: 220,
+      });
+    } catch (error) {
+      console.error("SettingsForm error2:", error);
+    } finally {
+      setIsLoading(false);
+    }
+    
+  }
+
   return (
     // <Card className="p-6 max-w-lg mx-auto shadow-lg bg-white">
     <div>
@@ -45,11 +68,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(
-            (data) => {
-              console.log("Button clicked");
-              console.log("SettingsForm data:", data);
-              onSubmit(data);
-            },
+            handleSubmit,
             (errors) => console.error("SettingsForm errors:", errors)
           )
           }
@@ -141,7 +160,16 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit }) => {
           />
 
           {/* Submit Button */}
-          <Button type="submit">Upload & Process</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="animate-spin"/> Processing...
+              </>
+            ) : (
+              "Upload & Process"
+            )}
+            
+          </Button>
         </form>
       </Form>
     {/* </Card> */}
