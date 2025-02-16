@@ -7,7 +7,7 @@ from utils import log_tmp_contents
 # note: run pip list --format=freeze > requirements.txt to update dependencies
 
 app = Flask(__name__)
-CORS(app, expose_headers="Content-Disposition")
+CORS(app, expose_headers="Content-Disposition", origins="https://notespace-wheat.vercel.app")
 
 # Detect if running locally or in production. 
 # If testing locally, before `flask run`, run `export FLASK_ENV=development`
