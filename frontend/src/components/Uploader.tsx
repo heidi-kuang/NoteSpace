@@ -26,10 +26,14 @@ const Uploader = () => {
       return;
     }
 
-    toast({title: "Processing...", 
-      description: "If this takes a while, it's because the free server I'm using to host my backend falls asleep after 15 minutes of inactivity and has to reboot. Give it like 30 seconds lol. Your next uploads should be processed much faster!",
-      duration: Infinity,
-    });
+    let toastId: string | null = null; // to track the toast ID
+    const toastTimer = setTimeout(() => {
+      toastId = toast({title: "Processing...", 
+        description: "If this takes a while, it's because the free server I'm using to host my backend falls asleep after 15 minutes of inactivity and has to reboot. Give it like 30 seconds lol. Your next uploads should be processed much faster!",
+        duration: Infinity,
+      });
+    }, 3000); // show toast only if loading exceeds 3 seconds
+    
 
     const formData = new FormData();
     formData.append("file", file);
@@ -40,7 +44,7 @@ const Uploader = () => {
     formData.append("desc", "test-frontend");
 
     try {
-      // await new Promise((resolve) => setTimeout(resolve, 2000)); // DEBUG
+      // await new Promise((resolve) => setTimeout(resolve, 5000)); // DEBUG
       const response = await fetch(`${API_URL}/upload`, {
         method: "POST",
         body: formData,
@@ -50,11 +54,16 @@ const Uploader = () => {
         throw new Error("Failed to process PDF");
       } else {
         console.log("PDF successfully processed");
-        toast({
-          title: "Success!",
-          description: "Your PDF is ready.",
-          duration: 5000,
-        })
+
+        clearTimeout(toastTimer);
+        if (toastId) {
+          toast({
+            title: "Success!",
+            description: "Your PDF is ready.",
+            duration: 2000,
+          }); // if user had to wait, update toast to success
+        }
+        
       }
 
       // Convert response to blob and create a download link
