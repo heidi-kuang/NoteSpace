@@ -5,6 +5,7 @@ interface PDFPreviewProps {
 const PDFPreview: React.FC<PDFPreviewProps> = ({ previewUrl }) => {
   if (!previewUrl) return null;
 
+  console.log("PDFPreview previewUrl:", previewUrl);
   return (
     <div style={{ marginTop: "16px", height: "500px"}}>
       <div className="border rounded-lg overflow-hidden shadow-md">

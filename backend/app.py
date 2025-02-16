@@ -7,7 +7,7 @@ from utils import log_tmp_contents
 # note: run pip list --format=freeze > requirements.txt to update dependencies
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, expose_headers="Content-Disposition")
 
 # Detect if running locally or in production. 
 # If testing locally, before `flask run`, run `export FLASK_ENV=development`
@@ -148,7 +148,12 @@ def upload_file():
 
     if file and allowed_file(file.filename):
         input_path = os.path.join(UPLOAD_FOLDER, file.filename)
-        output_path = os.path.join(OUTPUT_FOLDER, f"processed_{desc}_{file.filename}")
+
+        # name the output file {input_file_name}_NoteSpace.pdf
+        input_file_name, ext = os.path.splitext(file.filename)
+        output_file_name = f"{input_file_name}_NoteSpace{ext}"
+
+        output_path = os.path.join(OUTPUT_FOLDER, output_file_name)
 
         os.makedirs(UPLOAD_FOLDER, exist_ok=True)
         os.makedirs(OUTPUT_FOLDER, exist_ok=True)
@@ -160,7 +165,12 @@ def upload_file():
         add_margins(input_path, output_path, margin_ratio=margin_ratio, clip_rhs=clip_rhs, clip_lhs=clip_lhs, anchor=anchor)
         log_tmp_contents("After processing the file", OUTPUT_FOLDER) # print /tmp contents before after processing file
 
-        return send_file(output_path, as_attachment=True)
+        return send_file(
+           output_path, 
+           mimetype="application/pdf", 
+           as_attachment=False, 
+           download_name=output_file_name
+        )
 
     return {"error": "Invalid file type"}, 400
 
