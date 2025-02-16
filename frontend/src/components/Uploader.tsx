@@ -25,10 +25,11 @@ const Uploader = () => {
       toast({description: "Please select a file first.", variant: "error", duration: 3000});
       return;
     }
+    let loadingToastShown = false; // keep track of whether we showed the loading toast
 
-    let toastId: string | null = null; // to track the toast ID
     const toastTimer = setTimeout(() => {
-      toastId = toast({title: "Processing...", 
+      loadingToastShown = true;
+      toast({title: "Processing...", 
         description: "If this takes a while, it's because the free server I'm using to host my backend falls asleep after 15 minutes of inactivity and has to reboot. Give it like 30 seconds lol. Your next uploads should be processed much faster!",
         duration: Infinity,
       });
@@ -56,7 +57,8 @@ const Uploader = () => {
         console.log("PDF successfully processed");
 
         clearTimeout(toastTimer);
-        if (toastId) {
+        console.log("shown:", loadingToastShown);
+        if (loadingToastShown) {
           toast({
             title: "Success!",
             description: "Your PDF is ready.",
@@ -87,6 +89,7 @@ const Uploader = () => {
       console.log("set processed file name:", newProcessedFileName);
     } catch (error) {
       console.error("Error uploading file:", error);
+      clearTimeout(toastTimer);
     }
   }
 
