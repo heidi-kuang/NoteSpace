@@ -3,6 +3,7 @@ import Uploader from './components/Uploader';
 import logo from './assets/notespace-logo.svg';
 import { Toaster } from './components/ui/toaster';
 import { useEffect } from 'react';
+import Debug from './components/Debug';
 
 const changeFavicon = (isDarkMode: boolean) => {
   console.log ("isDarkMode:", isDarkMode);
@@ -33,6 +34,7 @@ function App() {
       <div>
         <Uploader />
       </div>
+      <Debug />
     </>
   )
 }

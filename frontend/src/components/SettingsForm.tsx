@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { FormValues } from "@/types/form";
 import { Loader2 } from "lucide-react";
 import confetti from "canvas-confetti";
+import SettingsToolTip from "./ui/SettingsToolTip";
 
 const formSchema = z.object({
   marginRatio: z
@@ -89,7 +90,10 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
             name="marginRatio"
             render={({ field }) => (
               <FormItem className="grid grid-cols-2 items-center gap-4">
-                <FormLabel className="text-right">Margin Ratio</FormLabel>
+                <div className="flex flex-row gap-2 items-center mt-2">
+                  <SettingsToolTip tip={"How wide of a margin you want to add, as a percentage of the original width."} />
+                  <FormLabel className="flex-1 text-right">Margin Ratio</FormLabel>
+                </div>
                 <FormControl>
                   <Input
                     type="number"
@@ -111,7 +115,10 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
             name="clipRHS"
             render={({ field }) => (
               <FormItem className="grid grid-cols-2 items-center gap-4">
-                <FormLabel className="text-right">Clip RHS</FormLabel>
+                <div className="flex flex-row gap-2 items-center mt-2">
+                  <SettingsToolTip tip={"How much you want to clip off from the right side, as a percentage of the original width."} />
+                  <FormLabel className="flex-1 text-right">Clip Right</FormLabel>
+                </div>
                 <FormControl>
                   <Input
                     type="number"
@@ -133,7 +140,10 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
             name="clipLHS"
             render={({ field }) => (
               <FormItem className="grid grid-cols-2 items-center gap-4">
-                <FormLabel className="text-right">Clip LHS</FormLabel>
+                <div className="flex flex-row gap-2 items-center mt-2">
+                  <SettingsToolTip tip={"How much you want to clip off from the left side, as a percentage of the original width."} />
+                  <FormLabel className="flex-1 text-right">Clip Left</FormLabel>
+                </div>
                 <FormControl>
                   <Input
                     type="number"
@@ -155,7 +165,10 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
             name="anchor"
             render={({ field }) => (
               <FormItem className="grid grid-cols-2 items-center gap-4">
-                <FormLabel className="text-right">Anchor Position</FormLabel>
+                <div className="flex flex-row gap-2 items-center mt-2">
+                  <SettingsToolTip tip={"Where to place your original PDF within the new one."} />
+                  <FormLabel className="flex-1 text-right">Anchor</FormLabel>
+                </div>
                 <FormControl>
                   <select {...field} className="border p-2 rounded">
                     <option value="left">Left</option>
