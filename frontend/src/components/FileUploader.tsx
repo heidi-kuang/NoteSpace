@@ -42,13 +42,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileSelect }) => {
         <div className="mt-4">
           <h4 className="text-sm font-semibold mb-2">PDF Preview:</h4>
           <div className="border rounded-lg overflow-hidden shadow-md">
-            <object
-              data={previewUrl}
-              type="application/pdf"
-              className="w-full h-96"
-            >
-              <p className="text-gray-600 text-sm m-8">PDF preview is not supported on this device. Check out the site on desktop!</p>
-            </object>
+            <embed src={previewUrl} width="100%" height="300px" className="rounded-lg" />
           </div>
         </div>
       )}
