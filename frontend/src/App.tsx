@@ -3,6 +3,7 @@ import Uploader from './components/Uploader';
 import logo from './assets/notespace-logo.svg';
 import { Toaster } from './components/ui/toaster';
 import { useEffect } from 'react';
+import { Analytics } from "@vercel/analytics/react"
 // import Debug from './components/Debug';
 
 const changeFavicon = (isDarkMode: boolean) => {
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <>
+      <Analytics />
       <Toaster />
       <div className="flex flex-col items-center p-6">
         <img
