@@ -30,7 +30,7 @@ const Uploader = () => {
     const toastTimer = setTimeout(() => {
       loadingToastShown = true;
       toast({title: "Processing...", 
-        description: "If this takes a while, it's because the free server I'm using to host my backend falls asleep after 15 minutes of inactivity and has to reboot. Give it like 30 seconds lol. Your next uploads should be processed much faster!",
+        description: "If this takes a while, it's because the free server I'm using to host my backend falls asleep after 15 minutes of inactivity and has to reboot. Give it a minute or two. Your next uploads should be processed much faster!",
         duration: Infinity,
       });
     }, 3000); // show toast only if loading exceeds 3 seconds
