@@ -67,7 +67,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
     inputName: "marginRatio" | "clipRHS" | "clipLHS" | "anchor"
   ) => { 
     if (e.target.value === "") { 
-      form.setValue(inputName, ""); // TODO: fix. this allows the user to backspace to an empty string and input leading decimals
+      form.setValue(inputName, "center"); // TODO: fix. this is a workaround that allows the user to backspace to an empty string and input leading decimals for number input fields
     }
     else {
       form.setValue(inputName, parseFloat(e.target.value))
