@@ -95,9 +95,9 @@ const Uploader = () => {
 
   return (
     <div style={{ padding: "20px", margin: "auto"}}>
-      <div className="flex flex-col md:flex-row w-full"> 
+      <div className="flex flex-col md:flex-row w-full sm:gap-8 md:gap-16 lg:gap-24"> 
         {/* File uploader on the left. Take up more space. */}
-        <div className="flex-2 mr-8 flex-grow">
+        <div className="flex-2 flex-grow">
           <FileUploader
             onFileSelect={(selectedFile) => {
               setFile(selectedFile);
