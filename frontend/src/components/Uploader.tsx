@@ -106,7 +106,7 @@ const Uploader = () => {
         </div>
         
         {/* Settings on the right. */}
-        <div className="h-[380px] bg-white shadow-lg p-5 rounded-lg flex-grow flex-1">
+        <div className="bg-white shadow-lg p-5 rounded-lg flex-grow flex-1">
           <SettingsForm onSubmit={handleFormSubmit} isLoading={isLoading} setIsLoading={setIsLoading}/>
         </div>
       </div>

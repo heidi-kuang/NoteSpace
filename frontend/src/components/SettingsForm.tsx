@@ -62,9 +62,12 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
     
   }
 
-  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>, inputName: string) => {
+  const handleNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement>, 
+    inputName: "marginRatio" | "clipRHS" | "clipLHS" | "anchor"
+  ) => { 
     if (e.target.value === "") { 
-      form.setValue(inputName, ""); 
+      form.setValue(inputName, ""); // TODO: fix. this allows the user to backspace to an empty string and input leading decimals
     }
     else {
       form.setValue(inputName, parseFloat(e.target.value))
@@ -72,7 +75,6 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
   }
 
   return (
-    // <Card className="p-6 max-w-lg mx-auto shadow-lg bg-white">
     <div>
       <h2 className="text-xl font-bold mb-4 text-center">Settings</h2>
       <Form {...form}>
@@ -182,19 +184,20 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
           />
 
           {/* Submit Button */}
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Loader2 className="animate-spin"/> Processing...
-              </>
-            ) : (
-              "Upload & Process"
-            )}
-            
-          </Button>
+          <div className="p-4">
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="animate-spin"/> Processing...
+                </>
+              ) : (
+                "Upload & Process"
+              )}
+              
+            </Button>
+          </div>
         </form>
       </Form>
-    {/* </Card> */}
     </div>
   );
 };
