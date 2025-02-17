@@ -61,6 +61,15 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
     
   }
 
+  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>, inputName: string) => {
+    if (e.target.value === "") { 
+      form.setValue(inputName, ""); 
+    }
+    else {
+      form.setValue(inputName, parseFloat(e.target.value))
+    }
+  }
+
   return (
     // <Card className="p-6 max-w-lg mx-auto shadow-lg bg-white">
     <div>
@@ -88,7 +97,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
                     min="0.1"
                     max="1.0"
                     value={field.value}
-                    onChange={(e) => form.setValue("marginRatio", parseFloat(e.target.value))}
+                    onChange={(e) => handleNumberChange(e, "marginRatio")}
                   />
                 </FormControl>
                 <FormMessage />
@@ -110,7 +119,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
                     min="0.0"
                     max="1.0"
                     value={field.value}
-                    onChange={(e) => form.setValue("clipRHS", parseFloat(e.target.value))}
+                    onChange={(e) => handleNumberChange(e, "clipRHS")}
                   />
                 </FormControl>
                 <FormMessage />
@@ -132,7 +141,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ onSubmit, isLoading, setIsL
                     min="0.0"
                     max="1.0"
                     value={field.value}
-                    onChange={(e) => form.setValue("clipLHS", parseFloat(e.target.value))}
+                    onChange={(e) => handleNumberChange(e, "clipLHS")}
                   />
                 </FormControl>
                 <FormMessage />
