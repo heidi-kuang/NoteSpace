@@ -80,10 +80,12 @@ const Uploader = () => {
       console.log("contentDisposition:", contentDisposition);
       let newProcessedFileName = "hellooo";
       if (contentDisposition) {
-        const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+        const fileNameMatch = contentDisposition.match(/filename=(.+)/);
         if (fileNameMatch) {
           setProcessedFileName(fileNameMatch[1]);
           newProcessedFileName = fileNameMatch[1];
+        } else {
+          console.log("no match")
         }
       }
       console.log("set processed file name:", newProcessedFileName);
