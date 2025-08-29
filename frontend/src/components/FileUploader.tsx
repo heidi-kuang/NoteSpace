@@ -4,19 +4,23 @@ import { Input } from "@/components/ui/input";
 import { UploadCloud } from "lucide-react"; // ShadCN supports Lucide icons
 
 interface FileUploaderProps {
-  onFileSelect: (file: File) => void;
+  setOriginalPdf: ( file: File ) => void;
+  setPdfPreviewUrl: ( url: string ) => void;
+  setFileName: ( name: string ) => void;
 }
 
-const FileUploader: React.FC<FileUploaderProps> = ({ onFileSelect }) => {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
-
+const FileUploader: React.FC<FileUploaderProps> = ({ 
+  setOriginalPdf,
+  setPdfPreviewUrl,
+  setFileName
+}) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const selectedFile = event.target.files[0];
-      onFileSelect(selectedFile);
-      setPreviewUrl(URL.createObjectURL(selectedFile));
+      setOriginalPdf(selectedFile);
+      setPdfPreviewUrl(URL.createObjectURL(selectedFile));
       setFileName(selectedFile.name);
+      console.log('FileUploader: uploaded', selectedFile.name);
     }
   };
 
@@ -35,17 +39,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileSelect }) => {
           className="hidden"
         />
       </Label>
-
-      {fileName && <p className="text-sm text-gray-700 mt-2 text-center">{fileName}</p>}
-
-      {previewUrl && (
-        <div className="mt-4">
-          <h4 className="text-sm font-semibold mb-2">PDF Preview:</h4>
-          <div className="border rounded-lg overflow-hidden shadow-md">
-            <embed src={previewUrl} width="100%" height="300px" className="rounded-lg" />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

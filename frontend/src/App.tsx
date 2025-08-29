@@ -1,9 +1,10 @@
 import './App.css';
-import Uploader from './components/Uploader';
+// import Uploader from './components/Uploader';
 import logo from './assets/notespace-logo.svg';
 import { Toaster } from './components/ui/toaster';
 import { useEffect } from 'react';
 import { Analytics } from "@vercel/analytics/react"
+import PDFProcessor from './components/PDFProcessor';
 // import Debug from './components/Debug';
 
 const changeFavicon = (isDarkMode: boolean) => {
@@ -34,7 +35,8 @@ function App() {
         <h3 className="text-xl font-bold mb-4">NoteSpace</h3>
       </div>
       <div>
-        <Uploader />
+        {/* <Uploader /> */}
+        <PDFProcessor />
       </div>
       {/* <Debug /> */}
     </>

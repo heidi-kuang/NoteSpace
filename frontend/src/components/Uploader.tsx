@@ -101,7 +101,7 @@ const Uploader = () => {
         {/* File uploader on the left. Take up more space. */}
         <div className="flex-2 flex-grow">
           <FileUploader
-            onFileSelect={(selectedFile) => {
+            onFileUpload={(selectedFile) => {
               setFile(selectedFile);
             }}
           />
