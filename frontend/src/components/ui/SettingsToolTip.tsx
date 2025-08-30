@@ -22,7 +22,7 @@ const SettingsToolTip: React.FC<SettingsToolTipProps>  = ({tip}) => {
       <PopoverTrigger asChild>
         <Info size={16} color="lightgray" className="cursor-pointer" />
       </PopoverTrigger>
-      <PopoverContent className="max-w-[150px]">
+      <PopoverContent className="max-w-[150px]" side="left">
         <p className="text-gray-600 text-sm">{tip}</p>
       </PopoverContent>
     </Popover>
