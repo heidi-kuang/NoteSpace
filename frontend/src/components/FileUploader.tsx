@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { UploadCloud } from "lucide-react"; // ShadCN supports Lucide icons
@@ -15,13 +14,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   setFileName
 }) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const selectedFile = event.target.files[0];
-      setOriginalPdf(selectedFile);
-      setPdfPreviewUrl(URL.createObjectURL(selectedFile));
-      setFileName(selectedFile.name);
-      console.log('FileUploader: uploaded', selectedFile.name);
-    }
+    const selectedFile = event.target.files?.[0];
+    if (!selectedFile) return;
+    setOriginalPdf(selectedFile);
+    setPdfPreviewUrl(URL.createObjectURL(selectedFile));
+    setFileName(selectedFile.name);
+    console.log('FileUploader: uploaded', selectedFile.name);
   };
 
   return (

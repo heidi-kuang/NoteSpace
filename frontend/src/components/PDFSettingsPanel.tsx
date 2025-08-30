@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { FormValues } from "@/types/form";
+// import { FormValues } from "@/types/form";
 import SettingsToolTip from "./ui/SettingsToolTip";
 import { useEffect, useRef } from "react";
 import { CONTENT_ALIGNMENT } from "@/constants/pdf-options";
@@ -11,9 +11,17 @@ import { PDFOptionsSchema } from "@/types/pdf-options";
 
 interface PDFSettingsPanelProps {
   onSettingsChange: (settings: PDFOptions) => void;
+  isLoading: boolean; // unused
+  originalPdf: File | null;
 }
 
-const PDFSettingsPanel: React.FC<PDFSettingsPanelProps> = ({ onSettingsChange }) => {
+const isSameFile = (a: File | null, b: File | null) => {
+  if (!a && !b) return true;
+  if (!a || !b) return false;
+  return a.name === b.name && a.size === b.size && a.lastModified === b.lastModified;
+}
+
+const PDFSettingsPanel: React.FC<PDFSettingsPanelProps> = ({ onSettingsChange, originalPdf }) => {
   const form = useForm<PDFOptions>({
     resolver: zodResolver(PDFOptionsSchema),
     mode: "onChange",
@@ -27,23 +35,28 @@ const PDFSettingsPanel: React.FC<PDFSettingsPanelProps> = ({ onSettingsChange })
 
   const watchAllFields = form.watch();
 
-  // Emit settings whenever they change
+  // Process file if file has changed or settings changed
   const prevSettingsRef = useRef<PDFOptions | null>(null);
+  const prevOriginalPdfRef = useRef<File | null>(null);
+
   useEffect(() => {
     const settingsChangeDebounceTimeout = setTimeout(() => {
-      if ((JSON.stringify(prevSettingsRef.current) !== JSON.stringify(watchAllFields))
-          && form.formState.isValid) {
+      const areSettingsChanged = JSON.stringify(prevSettingsRef.current) !== JSON.stringify(watchAllFields);
+      const isFileChanged = !isSameFile(prevOriginalPdfRef.current, originalPdf);
+
+      if (form.formState.isDirty && form.formState.isValid && (areSettingsChanged || isFileChanged)) {
         prevSettingsRef.current = watchAllFields;
-        console.log("PDFSettingsPanel: settings changed", watchAllFields);
+        prevOriginalPdfRef.current = originalPdf;
+        console.log("Processing:", watchAllFields);
         onSettingsChange(watchAllFields);
       } 
     }, 300);
     return () => clearTimeout(settingsChangeDebounceTimeout);
-  }, [watchAllFields, form.formState.isValid, form.formState.isDirty, onSettingsChange]);
+  }, [watchAllFields, form.formState.isValid, form.formState.isDirty, onSettingsChange, originalPdf]);
 
   const handleNumberChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    name: keyof FormValues
+    name: keyof PDFOptions
   ) => {
     const raw = e.target.value;
     const parsed = raw === "" ? "" : parseFloat(raw);
@@ -109,7 +122,7 @@ const PDFSettingsPanel: React.FC<PDFSettingsPanelProps> = ({ onSettingsChange })
         />
 
         {/* Clip RHS */}
-        <FormField
+        {/* <FormField
           control={form.control}
           name="clipRHS"
           render={({ field }) => (
@@ -133,10 +146,10 @@ const PDFSettingsPanel: React.FC<PDFSettingsPanelProps> = ({ onSettingsChange })
               <FormMessage />
             </div>
           )}
-        />
+        /> */}
 
         {/* Clip LHS */}
-        <FormField
+        {/* <FormField
           control={form.control}
           name="clipLHS"
           render={({ field }) => (
@@ -160,7 +173,7 @@ const PDFSettingsPanel: React.FC<PDFSettingsPanelProps> = ({ onSettingsChange })
               <FormMessage />
             </div>
           )}
-        />
+        /> */}
 
       </Form>
     </div>

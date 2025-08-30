@@ -19,7 +19,14 @@ const alignPage = (page: PDFPage, align: ContentAlignment, oldWidth: number, new
     default:
       throw new Error(`Unknown alignment option: ${align}`);
   }
-}
+};
+
+const widenPage = (page: PDFPage, marginRatio: number) => {
+  const { width, height } = page.getSize();
+  const newWidth = width * (1 + marginRatio);
+  page.setSize(newWidth, height);
+  return newWidth;
+};
 
 /**
  * Widen the original PDF
@@ -29,25 +36,23 @@ const alignPage = (page: PDFPage, align: ContentAlignment, oldWidth: number, new
  */
 const getWidenedPDFBlob = async (pdfDoc: PDFDocument, options: PDFOptions) => {
   const { marginRatio, anchor } = options;
-  
   const pages = pdfDoc.getPages();
 
-    for (const page of pages) {
-      const { width, height } = page.getSize();
+  for (const page of pages) {
+    const { width } = page.getSize();
 
-      // Set new width, e.g., 1.5× wider
-      const newWidth = width * (1 + marginRatio);
-      page.setSize(newWidth, height);
+    // Set new width, e.g., 1.5x wider
+    const newWidth = widenPage(page, marginRatio);
 
-      // Optionally move the content to center it on the wider page
-      alignPage(page, anchor, width, newWidth);
-    }
+    // Anchor the page to the left, center, or right
+    alignPage(page, anchor, width, newWidth);
+  }
 
-    const modifiedBytes = await pdfDoc.save();
-    const fixedBuffer = new Uint8Array(modifiedBytes.buffer.slice(0)) as Uint8Array<ArrayBuffer>; // creates a new buffer with correct type
-    const blob = new Blob([fixedBuffer], { type: 'application/pdf' });
+  const modifiedBytes = await pdfDoc.save();
+  const fixedBuffer = new Uint8Array(modifiedBytes.buffer.slice(0)) as Uint8Array<ArrayBuffer>; // creates a new buffer with correct type
+  const blob = new Blob([fixedBuffer], { type: 'application/pdf' });
 
-    return blob;
+  return blob;
 }
 
 /**

@@ -5,6 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import confetti from "canvas-confetti";
 
 interface DownloadButtonProps {
   downloadLink: string | null;
@@ -15,6 +16,13 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ downloadLink, processed
   if (!downloadLink) return null;
   
   const blurb = processedFileName;
+
+  const confettiAnimation = () => {
+    confetti({
+      particleCount: 90,
+      spread: 220,
+    });
+  }
   
   return (
     <div className="mt-4">
@@ -22,7 +30,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ downloadLink, processed
         <Tooltip>
           <TooltipTrigger asChild>
             <a href={downloadLink} download={processedFileName}>
-              <Button variant="outline">
+              <Button variant="outline" onClick={() => confettiAnimation()}>
                 Download
               </Button>
             </a>
