@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-// import { FormValues } from "@/types/form";
 import SettingsToolTip from "./ui/SettingsToolTip";
 import { useEffect, useRef } from "react";
 import { CONTENT_ALIGNMENT } from "@/constants/pdf-options";
@@ -79,7 +78,7 @@ const PDFSettingsPanel: React.FC<PDFSettingsPanelProps> = ({ onSettingsChange, o
             <div className="flex flex-col gap-2">
               <FormItem className="grid grid-cols-2 items-center gap-4">
                 <div className="flex flex-row gap-2 items-center mt-2">
-                  <SettingsToolTip tip="How wide of a margin to add, as a % of original width." />
+                  <SettingsToolTip tip="How wide of a margin to add, as a % of the original width." />
                   <FormLabel className="flex-1 text-right">Margin Ratio</FormLabel>
                 </div>
                 <FormControl>

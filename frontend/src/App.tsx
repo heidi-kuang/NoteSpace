@@ -1,11 +1,10 @@
 import './App.css';
-// import Uploader from './components/Uploader';
 import logo from './assets/notespace-logo.svg';
 import { Toaster } from './components/ui/toaster';
 import { useEffect } from 'react';
 import { Analytics } from "@vercel/analytics/react"
 import PDFProcessor from './components/PDFProcessor';
-// import Debug from './components/Debug';
+import FeedbackFloatingButton from './components/FeedbackFloatingButton';
 
 const changeFavicon = (isDarkMode: boolean) => {
   console.log ("isDarkMode:", isDarkMode);
@@ -26,6 +25,7 @@ function App() {
     <>
       <Analytics />
       <Toaster />
+      <FeedbackFloatingButton />
       <div className="flex flex-col items-center p-6">
         <img
           src={logo}
@@ -35,7 +35,6 @@ function App() {
         <h3 className="text-xl font-bold mb-4">NoteSpace</h3>
       </div>
       <div>
-        {/* <Uploader /> */}
         <PDFProcessor />
       </div>
       {/* <Debug /> */}
