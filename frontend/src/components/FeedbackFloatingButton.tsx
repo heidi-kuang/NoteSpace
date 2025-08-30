@@ -7,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { isMobile } from "../utils/is-mobile";
 
 const FeedbackFloatingButton = () => {
   const feedbackFormLink = "https://forms.gle/kAcAamQnzH55p4ar9";
@@ -19,8 +20,9 @@ const FeedbackFloatingButton = () => {
             <Button
               asChild
               className={cn(
-                // `${isMobile ? "top" : "bottom"}-6 ${isMobile ? "left" : "right"}-6`,
-                "fixed top-6 left-6 z-50 h-12 w-12 rounded-full p-0 bg-gray-200 text-gray-500",
+                "fixed",
+                `${isMobile ? "top" : "bottom"}-6 ${isMobile ? "left" : "right"}-6`,
+                "z-50 h-12 w-12 rounded-full p-0 bg-gray-200 text-gray-500",
                 "hover:bg-black hover:text-white transition-all duration-300 ease-in-out",
                 "hover:scale-110 active:scale-95 shadow-lg",
                 "[&_svg]:size-5"
@@ -31,7 +33,7 @@ const FeedbackFloatingButton = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Give feedback"
-                className="flex items-center justify-center w-full"
+                className="flex items-center justify-center"
               >
                 <MessageCircleHeart className="h-8 w-8" />
               </a>
