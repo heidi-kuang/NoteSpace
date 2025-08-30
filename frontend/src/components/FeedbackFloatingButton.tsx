@@ -22,7 +22,7 @@ const FeedbackFloatingButton = () => {
               asChild
               className={cn(
                 "fixed",
-                `${isMobile ? "top" : "bottom"}-6 ${isMobile ? "left" : "right"}-6`,
+                isMobile ? "top-6 left-6" : "bottom-6 right-6",
                 "z-50 h-12 w-12 rounded-full p-0 bg-gray-200 text-gray-500",
                 "hover:bg-black hover:text-white transition-all duration-300 ease-in-out",
                 "hover:scale-110 active:scale-95 shadow-lg",
