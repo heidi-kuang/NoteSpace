@@ -8,7 +8,7 @@ export const PDFOptionsSchema = z.object({
       invalid_type_error: "",
     })
     .min(0.0, { message: "Margin must be a positive number" })
-    .max(1.0, { message: "Margin cannot exceed 1.0" }),
+    .max(5.0, { message: "Margin cannot exceed 5.0" }),
   clipRHS: z
     .number({
       invalid_type_error: "",
