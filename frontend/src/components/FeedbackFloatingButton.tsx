@@ -7,9 +7,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { isMobile } from "../utils/is-mobile";
+import { useIsMobile } from "@/hooks/is-mobile";
 
 const FeedbackFloatingButton = () => {
+  const isMobile = useIsMobile();
   const feedbackFormLink = "https://forms.gle/kAcAamQnzH55p4ar9";
   const blurb = "Have suggestions or feedback? Let us know!";
 

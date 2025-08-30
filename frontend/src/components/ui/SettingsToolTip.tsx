@@ -10,13 +10,14 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover"
 import { Info } from "lucide-react"
-import { isMobile } from "../../utils/is-mobile"
+import { useIsMobile } from "@/hooks/is-mobile"
 
 interface SettingsToolTipProps {
   tip: string;
 }
 
 const SettingsToolTip: React.FC<SettingsToolTipProps>  = ({tip}) => {
+  const isMobile = useIsMobile();
   return isMobile ? (
     <Popover>
       <PopoverTrigger asChild>
