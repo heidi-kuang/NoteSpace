@@ -7,7 +7,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { isMobile } from "../utils/is-mobile";
 
 const FeedbackFloatingButton = () => {
   const feedbackFormLink = "https://forms.gle/kAcAamQnzH55p4ar9";
